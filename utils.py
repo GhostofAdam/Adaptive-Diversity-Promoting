@@ -260,11 +260,7 @@ def log_style_distence(feature_map,num_model):
   #print(feature_map.shape)
   return 0 
 
-
-def Loss_with_Style(output, y_pred, num_model=FLAGS.num_models):
-  feature_map = output[1]
-  y_true = output[0]
-  print(y_true.shape)
+def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
   y_true = (num_model * y_true) / tf.reduce_sum(y_true, axis=1, keepdims=True) 
   y_p = tf.split(y_pred, num_model, axis=-1)
   y_t = tf.split(y_true, num_model, axis=-1)
@@ -275,23 +271,28 @@ def Loss_with_Style(output, y_pred, num_model=FLAGS.num_models):
     return CE_all
   else:
     EE = Ensemble_Entropy(y_true, y_pred, num_model)
-    log_dets = log_style_distence(feature_map, num_model)
-    return CE_all - FLAGS.lamda * EE - FLAGS.log_det_lamda * log_dets
+    return CE_all - FLAGS.lamda * EE
+
+def Style_Loss(output, y_pred, num_model=FLAGS.num_models):
+  feature_map = output
+  log_det = log_style_distence(feature_map,num_model)
+  return log_det
+  
   
 def acc_style_metric(output, y_pred, num_model=FLAGS.num_models):
-  y_true = output[0]
+  y_true = output
   y_p = tf.split(y_pred, num_model, axis=-1)
   y_t = tf.split(y_true, num_model, axis=-1)
   ens_p = tf.reduce_mean(y_p, axis=0)
   return keras.metrics.categorical_accuracy(y_t[0], ens_p)
 
 def style_Ensemble_Entropy_metric(output, y_pred, num_model=FLAGS.num_models):
-  y_true = output[0]
+  y_true = output
   EE = Ensemble_Entropy(y_true, y_pred, num_model=num_model)
   return K.mean(EE)
 
 def style_log_det_metric(output, y_pred, num_model=FLAGS.num_models):
-  feature_map = output[1]
+  feature_map = output
   log_dets = log_style_distence(feature_map, num_model)
   return log_dets
 

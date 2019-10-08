@@ -6,8 +6,6 @@ from keras.regularizers import l2
 from keras.models import Model
 
 
-
-
 def resnet_layer(inputs,
                  num_filters=16,
                  kernel_size=3,

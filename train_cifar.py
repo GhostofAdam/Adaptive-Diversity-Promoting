@@ -89,18 +89,18 @@ for i in range(FLAGS.num_models):
 model_output = keras.layers.concatenate(model_out)
 model_feature_map = keras.layers.concatenate(feature_maps)
 
-model = Model(input=model_input, output=model_output)
-
-model.compile(
-        loss=Loss_withEE_DPP,
-        optimizer=Adam(lr=lr_schedule(0)),
-        metrics=[acc_metric, Ensemble_Entropy_metric, log_det_metric])
-# model = Model(inputs=model_input, outputs=[model_output,model_feature_map])
+# model = Model(input=model_input, output=model_output)
 
 # model.compile(
-#         loss=Loss_with_Style,
+#         loss=Loss_withEE_DPP,
 #         optimizer=Adam(lr=lr_schedule(0)),
-#         metrics=[acc_style_metric, style_Ensemble_Entropy_metric, style_log_det_metric])
+#         metrics=[acc_metric, Ensemble_Entropy_metric, log_det_metric])
+model = Model(inputs=model_input, outputs=[model_output,model_feature_map])
+
+model.compile(
+        loss={'model_output':CE_loss,'model_feature_map':Style_Loss
+        optimizer=Adam(lr=lr_schedule(0)),
+        metrics=['model_output':acc_style_metric,'model_output': style_Ensemble_Entropy_metric, 'model_feature_map':style_log_det_metric])
 
 model.summary()
 print(model_type)
