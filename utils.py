@@ -273,7 +273,7 @@ def Loss_with_Style(output, y_pred, num_model=FLAGS.num_models):
     return CE_all
   else:
     EE = Ensemble_Entropy(y_true, y_pred, num_model)
-    log_dets = log_det(y_true, y_pred, num_model)
+    log_dets = log_style_distence(feature_map, num_model)
     return CE_all - FLAGS.lamda * EE - FLAGS.log_det_lamda * log_dets
 
 

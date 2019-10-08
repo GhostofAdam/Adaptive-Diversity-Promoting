@@ -92,7 +92,7 @@ model_feature_map = keras.layers.concatenate(feature_maps)
 model = Model(input=model_input, output=[model_output,feature_maps])
 
 model.compile(
-        loss=Loss_withEE_DPP,
+        loss=Loss_with_Style,
         optimizer=Adam(lr=lr_schedule(0)),
         metrics=[acc_metric, Ensemble_Entropy_metric, log_det_metric])
 model.summary()
