@@ -3,7 +3,6 @@ import keras
 from keras import backend as K
 import tensorflow as tf
 import numpy as np
-from cleverhans.attacks_tf import _project_perturbation, UnrolledAdam
 from cleverhans.attacks import Attack
 from distutils.version import LooseVersion
 import logging
