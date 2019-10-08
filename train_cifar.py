@@ -94,7 +94,7 @@ model = Model(input=model_input, output=[model_output,model_feature_map])
 model.compile(
         loss=Loss_with_Style,
         optimizer=Adam(lr=lr_schedule(0)),
-        metrics=[acc_metric, Ensemble_Entropy_metric, log_det_metric])
+        metrics=[acc_style_metric, style_Ensemble_Entropy_metric, style_log_det_metric])
 model.summary()
 print(model_type)
 
