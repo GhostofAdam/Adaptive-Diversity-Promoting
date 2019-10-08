@@ -91,6 +91,7 @@ def acc_metric(y_true, y_pred, num_model=FLAGS.num_models):
 
 ## Loss ##
 def Loss_withEE_DPP(y_true, y_pred, num_model=FLAGS.num_models):
+    print(y_true.shape)
     y_true = (num_model * y_true) / tf.reduce_sum(y_true, axis=1, keepdims=True) 
     y_p = tf.split(y_pred, num_model, axis=-1)
     y_t = tf.split(y_true, num_model, axis=-1)
