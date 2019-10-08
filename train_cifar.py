@@ -80,13 +80,16 @@ model_input = Input(shape=input_shape)
 
 model_dic = {}
 model_out = []
+feature_maps = []
 for i in range(FLAGS.num_models):
     model_dic[str(i)] = resnet_v1(input=model_input, depth=depth, num_classes=num_classes, dataset=FLAGS.dataset)
     model_out.append(model_dic[str(i)][2])
+    feature_maps.append(model_dic[str(i)][5])
 
 model_output = keras.layers.concatenate(model_out)
+model_feature_map = keras.layers.concatenate(feature_maps)
 
-model = Model(input=model_input, output=model_output)
+model = Model(input=model_input, output=[model_output,feature_maps])
 
 model.compile(
         loss=Loss_withEE_DPP,

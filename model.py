@@ -114,6 +114,7 @@ def resnet_v1(input, depth, num_classes=10, dataset='cifar10'):
     else:
         poolsize = 8
     x = AveragePooling2D(pool_size=poolsize)(x)
+    feature_map = x
     final_features = Flatten()(x)
     logits = Dense(
         num_classes, kernel_initializer='he_normal')(final_features)
@@ -121,4 +122,4 @@ def resnet_v1(input, depth, num_classes=10, dataset='cifar10'):
 
     # Instantiate model.
     model = Model(inputs=inputs, outputs=outputs)
-    return model, inputs, outputs, logits, final_features
+    return model, inputs, outputs, logits, final_features, feature_map
