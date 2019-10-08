@@ -291,7 +291,7 @@ def style_Ensemble_Entropy_metric(output, y_pred, num_model=FLAGS.num_models):
 def style_log_det_metric(output, y_pred, num_model=FLAGS.num_models):
   feature_map = output[1]
   log_dets = log_style_distence(feature_map, num_model)
-  return K.mean(log_dets)
+  return log_dets
 
 
 
