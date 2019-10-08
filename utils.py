@@ -285,7 +285,6 @@ def acc_style_metric(output, y_pred, num_model=FLAGS.num_models):
 
 def style_Ensemble_Entropy_metric(output, y_pred, num_model=FLAGS.num_models):
   y_true = output[0]
-  y_true, y_pred, num_model=FLAGS.num_models):
   EE = Ensemble_Entropy(y_true, y_pred, num_model=num_model)
   return K.mean(EE)
 
