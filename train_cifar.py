@@ -89,7 +89,7 @@ for i in range(FLAGS.num_models):
 model_output = keras.layers.concatenate(model_out)
 model_feature_map = keras.layers.concatenate(feature_maps)
 
-model = Model(input=model_input, output=[model_output,model_feature_map])
+model = Model(inputs=model_input, outputs=[model_output,model_feature_map])
 
 model.compile(
         loss=Loss_with_Style,
