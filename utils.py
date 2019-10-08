@@ -257,8 +257,8 @@ def get_ensemble_diversity_values(sess, x, y, predictions, number_model, X_test=
   return ensemble_diversity_records #len(X_test) X 1
 
 def log_style_distence(feature_map,num_model):
-  #print(feature_map.shape)
-  return 0 
+  print(feature_map.shape)
+  return K.mean(feature_map)
 
 def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
   y_true = (num_model * y_true) / tf.reduce_sum(y_true, axis=1, keepdims=True) 
