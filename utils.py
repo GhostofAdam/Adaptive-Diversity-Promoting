@@ -264,6 +264,7 @@ def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
   y_true = (num_model * y_true) / tf.reduce_sum(y_true, axis=1, keepdims=True) 
   y_p = tf.split(y_pred, num_model, axis=-1)
   y_t = tf.split(y_true, num_model, axis=-1)
+  CE_all = 0
   for i in range(num_model):
     CE_all += keras.losses.categorical_crossentropy(y_t[i], y_p[i])
   if FLAGS.lamda==0 and FLAGS.log_det_lamda==0:
