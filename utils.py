@@ -257,7 +257,7 @@ def get_ensemble_diversity_values(sess, x, y, predictions, number_model, X_test=
   return ensemble_diversity_records #len(X_test) X 1
 
 def log_style_distence(feature_map,num_model):
-  print(feature_map)
+  feature_map = K.squeeze(feature_map)
   return K.mean(feature_map)
 
 def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
