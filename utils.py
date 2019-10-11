@@ -257,7 +257,14 @@ def get_ensemble_diversity_values(sess, x, y, predictions, number_model, X_test=
   return ensemble_diversity_records #len(X_test) X 1
 
 def log_style_distence(feature_map,num_model):
-  style_loss_sum = K.mean(feature_map)
+  feature_map = tf.reshape(feature_map,[-1,num_model,64])
+  f_p = tf.split(feature_map,num_model.axis=-1)
+  style_loss_sum = 0
+  for i in range(num_model):
+      for j in range(num_model):
+        if i is not j:
+          style_loss_sum+=keras.losses.mean_squared_error(f_p[i],f_p[j])
+  style_loss_sum/=2
   return FLAGS.log_det_lamda*style_loss_sum
 
 def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
