@@ -280,26 +280,26 @@ def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
     EE = Ensemble_Entropy(y_true, y_pred, num_model)
     return CE_all - FLAGS.lamda * EE
 
-def Style_Loss(output, y_pred, num_model=FLAGS.num_models):
-  feature_map = output
+def Style_Loss(y_true, y_pred, num_model=FLAGS.num_models):
+  feature_map = y_pred
   log_det = log_style_distence(feature_map,num_model)
   return log_det
   
   
-def acc_style_metric(output, y_pred, num_model=FLAGS.num_models):
-  y_true = output
+def acc_style_metric(y_true, y_pred, num_model=FLAGS.num_models):
+  y_true = y_pred
   y_p = tf.split(y_pred, num_model, axis=-1)
   y_t = tf.split(y_true, num_model, axis=-1)
   ens_p = tf.reduce_mean(y_p, axis=0)
   return keras.metrics.categorical_accuracy(y_t[0], ens_p)
 
-def style_Ensemble_Entropy_metric(output, y_pred, num_model=FLAGS.num_models):
-  y_true = output
+def style_Ensemble_Entropy_metric(y_true, y_pred, num_model=FLAGS.num_models):
+  
   EE = Ensemble_Entropy(y_true, y_pred, num_model=num_model)
   return K.mean(EE)
 
-def style_log_det_metric(output, y_pred, num_model=FLAGS.num_models):
-  feature_map = output
+def style_log_det_metric(y_true, y_pred, num_model=FLAGS.num_models):
+  feature_map = y_pred
   log_dets = log_style_distence(feature_map, num_model)
   return log_dets
 
