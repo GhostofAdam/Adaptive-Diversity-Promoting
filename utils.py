@@ -265,7 +265,7 @@ def log_style_distence(feature_map,num_model):
     size = height * width * filters
     feats = tf.reshape(f_p[i], (bs, height * width, filters))
     feats_T = tf.transpose(feats, perm=[0,2,1])
-    grams = tf.matmul(feats_T, feats) / siz
+    grams = tf.matmul(feats_T, feats) / size
     f_p[i] = grams
   for i in range(num_model):
       for j in range(num_model):
