@@ -99,7 +99,7 @@ feature_maps_baseline = []
 for i in range(FLAGS.num_models):
     model_dic_baseline[str(i)] = resnet_v1(input=model_input_baseline, depth=depth, num_classes=num_classes, dataset=FLAGS.dataset)
     model_out_baseline.append(model_dic_baseline[str(i)][2])
-    feature_maps_baseline.append(model_dic[str(i)][5])
+    feature_maps_baseline.append(model_dic_baseline[str(i)][5])
 
 model_output_baseline = keras.layers.concatenate(model_out_baseline)
 model_feature_map_baseline = keras.layers.concatenate(feature_maps_baseline)
