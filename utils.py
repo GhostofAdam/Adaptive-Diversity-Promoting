@@ -257,8 +257,7 @@ def get_ensemble_diversity_values(sess, x, y, predictions, number_model, X_test=
   return ensemble_diversity_records #len(X_test) X 1
 
 def log_style_distence(feature_map,num_model):
-  feature_map = tf.reshape(feature_map,[-1,num_model,64])
-  f_p = tf.split(feature_map,num_model,axis=-2)
+  f_p = tf.split(feature_map,num_model,axis=-1)
   style_loss_sum = 0
   for i in range(num_model):
       for j in range(num_model):
