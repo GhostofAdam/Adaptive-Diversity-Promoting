@@ -261,7 +261,7 @@ def log_style_distence(feature_map,num_model):
   style_loss_sum = 0
   
   for i in range(num_model):
-    bs, height, width, filters = map(lambda i:i.value,f_p[i].get_shape())
+    _, height, width, filters = map(lambda i:i.value,f_p[i].get_shape())
     size = height * width * filters
     feats = tf.reshape(f_p[i], [-1, height * width, filters])
     feats_T = tf.transpose(feats, perm=[0,2,1])
