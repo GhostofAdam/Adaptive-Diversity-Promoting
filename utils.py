@@ -259,8 +259,14 @@ def get_ensemble_diversity_values(sess, x, y, predictions, number_model, X_test=
 def log_style_distence(feature_map,num_model):
   f_p = tf.split(feature_map,num_model,axis=-1)
   style_loss_sum = 0
+  
   for i in range(num_model):
-    f_p[i] = tf.matmul(f_p[i],tf.transpose(f_p[i],perm=[0,2,1]))
+    bs, height, width, filters = map(lambda i:i.value,f_p[i].get_shape())
+    size = height * width * filters
+    feats = tf.reshape(f_p[i], (bs, height * width, filters))
+    feats_T = tf.transpose(feats, perm=[0,2,1])
+    grams = tf.matmul(feats_T, feats) / siz
+    f_p[i] = grams
   for i in range(num_model):
       for j in range(num_model):
         if i is not j:
