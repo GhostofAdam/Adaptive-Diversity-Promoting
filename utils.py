@@ -260,11 +260,13 @@ def log_style_distence(feature_map,num_model):
   f_p = tf.split(feature_map,num_model,axis=-1)
   style_loss_sum = 0
   for i in range(num_model):
+    f_p[i] = tf.matmul(f_p[i],f_p[i].transpose())
+  for i in range(num_model):
       for j in range(num_model):
         if i is not j:
           style_loss_sum+=keras.losses.mean_squared_error(f_p[i],f_p[j])
   style_loss_sum/=2
-  return FLAGS.log_det_lamda*style_loss_sum
+  return -FLAGS.log_det_lamda*style_loss_sum
 
 def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
   y_true = (num_model * y_true) / tf.reduce_sum(y_true, axis=1, keepdims=True) 
@@ -287,7 +289,6 @@ def Style_Loss(y_true, y_pred, num_model=FLAGS.num_models):
   
   
 def acc_style_metric(y_true, y_pred, num_model=FLAGS.num_models):
-  y_true = y_pred
   y_p = tf.split(y_pred, num_model, axis=-1)
   y_t = tf.split(y_true, num_model, axis=-1)
   ens_p = tf.reduce_mean(y_p, axis=0)
