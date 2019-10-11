@@ -103,7 +103,7 @@ for i in range(FLAGS.num_models):
 
 model_output_baseline = keras.layers.concatenate(model_out_baseline)
 model_feature_map_baseline = keras.layers.concatenate(feature_maps_baseline)
-model_baseline = Model(inputs=model_input_baseline, outputs=[model_output,model_feature_map_baseline])
+model_baseline = Model(inputs=model_input_baseline, outputs=[model_output_baseline,model_feature_map_baseline])
 model_ensemble_baseline = keras.layers.Average()(model_out_baseline)
 model_ensemble_baseline = Model(input=model_input_baseline, output=model_ensemble_baseline)
 
