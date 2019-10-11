@@ -99,7 +99,7 @@ model = Model(inputs=model_input, outputs=[model_output,model_feature_map])
 
 model.compile(
         loss={'concatenate_1':CE_loss,'concatenate_2':Style_Loss},
-        loss_weights=[FLAGS.lamda, FLAGS.log_det_lamda],
+        loss_weights=[1, FLAGS.log_det_lamda],
         optimizer=Adam(lr=lr_schedule(0)),
         metrics={'concatenate_1': acc_style_metric})
 
@@ -116,7 +116,7 @@ filepath = os.path.join(save_dir, model_name)
 
 # Prepare callbacks for model saving and for learning rate adjustment.
 checkpoint = ModelCheckpoint(
-    filepath=filepath, monitor='val_acc_metric', mode='max', verbose=2, save_best_only=True)
+    filepath=filepath, monitor='val_concatenate_1_acc_style_metric', mode='max', verbose=2, save_best_only=True)
 
 lr_scheduler = LearningRateScheduler(lr_schedule)
 
