@@ -260,7 +260,7 @@ def log_style_distence(feature_map,num_model):
   f_p = tf.split(feature_map,num_model,axis=-1)
   style_loss_sum = 0
   for i in range(num_model):
-    f_p[i] = tf.matmul(f_p[i],f_p[i].transpose())
+    f_p[i] = tf.matmul(f_p[i],tf.transpose(f_p[i],perm=[0,2,1]))
   for i in range(num_model):
       for j in range(num_model):
         if i is not j:
