@@ -100,7 +100,7 @@ model = Model(inputs=model_input, outputs=[model_output,model_feature_map])
 model.compile(
         loss={'concatenate_1':CE_loss,'concatenate_2':Style_Loss},
         optimizer=Adam(lr=lr_schedule(0)),
-        metrics={'concatenate_1': acc_style_metric,'concatenate_1': style_Ensemble_Entropy_metric, 'concatenate_2':style_log_det_metric})
+        metrics={'concatenate_1': acc_style_metric,'concatenate_2':style_log_det_metric})
 
 model.summary()
 print(model_type)
