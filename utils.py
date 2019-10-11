@@ -263,7 +263,7 @@ def log_style_distence(feature_map,num_model):
   for i in range(num_model):
     bs, height, width, filters = map(lambda i:i.value,f_p[i].get_shape())
     size = height * width * filters
-    feats = tf.reshape(f_p[i], [bs, height * width, filters])
+    feats = tf.reshape(f_p[i], [-1, height * width, filters])
     feats_T = tf.transpose(feats, perm=[0,2,1])
     grams = tf.matmul(feats_T, feats) / size
     f_p[i] = grams
