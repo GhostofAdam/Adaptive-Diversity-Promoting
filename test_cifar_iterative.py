@@ -54,10 +54,10 @@ y_test = keras.utils.to_categorical(y_test, num_classes)
 
 
 # Define input TF placeholder
-x = tf.placeholder(tf.float32, shape=(None, 32, 32, 3))
-y = tf.placeholder(tf.float32, shape=(None, num_classes))
-sess = tf.Session()
-keras.backend.set_session(sess)
+# x = tf.placeholder(tf.float32, shape=(None, 32, 32, 3))
+# y = tf.placeholder(tf.float32, shape=(None, num_classes))
+# sess = tf.Session()
+# keras.backend.set_session(sess)
 
 # Prepare model pre-trained checkpoints directory.
 save_dir = os.path.join(os.getcwd(), FLAGS.dataset+'_EE_LED_saved_models'+str(FLAGS.num_models)+'_lamda'+str(FLAGS.lamda)+'_logdetlamda'+str(FLAGS.log_det_lamda)+'_'+str(FLAGS.augmentation))
