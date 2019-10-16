@@ -116,9 +116,7 @@ wrap_ensemble_baseline = KerasModelWrapper(model_ensemble_baseline)
 
 
 
-#Load model
-model.load_weights(filepath,by_name=True)
-model_baseline.load_weights(filepath_baseline,by_name=True)
+
 
 
 
@@ -157,3 +155,7 @@ preds_baseline = model_ensemble_baseline(adv_x_baseline)
 acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
 acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
 print('adv_ensemble_acc: %.3f adv_ensemble_baseline_acc: %.3f'%(acc,acc_baseline))
+
+#Load model
+model.load_weights(filepath,by_name=True)
+model_baseline.load_weights(filepath_baseline,by_name=True)
