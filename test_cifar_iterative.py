@@ -54,10 +54,10 @@ y_test = keras.utils.to_categorical(y_test, num_classes)
 
 
 # Define input TF placeholder
-# x = tf.placeholder(tf.float32, shape=(None, 32, 32, 3))
-# y = tf.placeholder(tf.float32, shape=(None, num_classes))
-# sess = tf.Session()
-# keras.backend.set_session(sess)
+x = tf.placeholder(tf.float32, shape=(None, 32, 32, 3))
+y = tf.placeholder(tf.float32, shape=(None, num_classes))
+sess = tf.Session()
+keras.backend.set_session(sess)
 
 # Prepare model pre-trained checkpoints directory.
 save_dir = os.path.join(os.getcwd(), FLAGS.dataset+'_EE_LED_saved_models'+str(FLAGS.num_models)+'_lamda'+str(FLAGS.lamda)+'_logdetlamda'+str(FLAGS.log_det_lamda)+'_'+str(FLAGS.augmentation))
@@ -86,9 +86,8 @@ model_output = keras.layers.concatenate(model_out)
 model_feature_map = keras.layers.concatenate(feature_maps)
 
 model = Model(inputs=model_input, outputs=[model_output,model_feature_map])
-model.summary()
 model_ensemble = keras.layers.Average()(model_out)
-model_ensemble = Model(inputs=model_input, outputs=model_ensemble)
+model_ensemble = Model(input=model_input, output=model_ensemble)
 
 
 
@@ -106,14 +105,13 @@ model_output_baseline = keras.layers.concatenate(model_out_baseline)
 model_feature_map_baseline = keras.layers.concatenate(feature_maps_baseline)
 model_baseline = Model(inputs=model_input_baseline, outputs=[model_output_baseline,model_feature_map_baseline])
 model_ensemble_baseline = keras.layers.Average()(model_out_baseline)
-model_ensemble_baseline = Model(inputs=model_input_baseline, outputs=model_ensemble_baseline)
+model_ensemble_baseline = Model(input=model_input_baseline, output=model_ensemble_baseline)
 
 
 
 #Get individual models
 wrap_ensemble = KerasModelWrapper(model_ensemble)
 wrap_ensemble_baseline = KerasModelWrapper(model_ensemble_baseline)
-
 
 
 
@@ -155,6 +153,7 @@ preds_baseline = model_ensemble_baseline(adv_x_baseline)
 acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
 acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
 print('adv_ensemble_acc: %.3f adv_ensemble_baseline_acc: %.3f'%(acc,acc_baseline))
+
 
 #Load model
 model.load_weights(filepath,by_name=True)
