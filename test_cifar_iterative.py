@@ -116,8 +116,8 @@ wrap_ensemble_baseline = KerasModelWrapper(model_ensemble_baseline)
 
 
 #Load model
-model.load_weights(filepath,by_name=true)
-model_baseline.load_weights(filepath_baseline,by_name=true)
+model.load_weights(filepath,by_name=True)
+model_baseline.load_weights(filepath_baseline,by_name=True)
 
 
 
