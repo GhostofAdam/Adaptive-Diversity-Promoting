@@ -311,4 +311,16 @@ def style_log_det_metric(y_true, y_pred, num_model=FLAGS.num_models):
   return log_dets
 
 
-
+class MyIterator:
+  def __init__(self,x_iterator,y,b_size):
+    self.x_iterator = x_iterator
+    self.label = y.split(y,b_size,0)
+    self.i = 0
+    self.len = len(self.label)
+  def __next__(self):
+    if self.i>=self.len:
+      raise StopIteration
+    index = self.i
+    self.i+=1
+    return (self.x_iterator.__next__(),{'concatenate_1':self.label[index],
+        'concatenate_2':self.label[index]})
