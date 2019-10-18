@@ -218,7 +218,7 @@ else:
     my_iterator = MyIterator(f,y_train_2,FLAGS.batch_size)
     model.fit_generator(
         my_iterator,
-        steps_per_epoch=x_train.shape[0] // FLAGS.batch_size
+        steps_per_epoch=x_train.shape[0] // FLAGS.batch_size,
         validation_data=(x_test, y_tests_2),
         epochs=epochs,
         verbose=1,
