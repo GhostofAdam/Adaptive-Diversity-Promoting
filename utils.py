@@ -317,6 +317,8 @@ class MyIterator:
     self.label = np.array_split(y,b_size,0)
     self.i = 0
     self.len = len(self.label)
+    print(y.shape)
+    print(self.label[0].shape)
   def __next__(self):
     if self.i>=self.len:
       raise StopIteration
