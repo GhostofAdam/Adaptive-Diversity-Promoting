@@ -314,7 +314,7 @@ def style_log_det_metric(y_true, y_pred, num_model=FLAGS.num_models):
 class MyIterator:
   def __init__(self,x_iterator,y,b_size):
     self.x_iterator = x_iterator
-    self.label = np.array_split(y,b_size,0)
+    self.label = np.array_split(y,y.shape[0]/b_size+1,0)
     self.i = 0
     self.len = len(self.label)
     print(y.shape)
