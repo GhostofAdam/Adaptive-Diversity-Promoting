@@ -311,10 +311,12 @@ def style_log_det_metric(y_true, y_pred, num_model=FLAGS.num_models):
   return log_dets
 
 
-class MyIterator:
+class MyIterator(keras.utils.Sequence):
   def __init__(self,iterator):
     self.iterator = iterator
-  def __next__(self):
-    x,y=self.iterator.__next__()
+  def __len__(self):
+    return self.iterator.__len__()
+  def __getitem__(self,index):
+    x,y=self.iterator.__getitem__(index)
     return (x,{'concatenate_1':y,
         'concatenate_2':y})
