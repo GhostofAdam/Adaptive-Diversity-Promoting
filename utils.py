@@ -319,6 +319,7 @@ class MyIterator:
     self.len = len(self.label)
     print(y.shape)
     print(self.label[0].shape)
+    print(b_size)
   def __next__(self):
     if self.i>=self.len:
       raise StopIteration
