@@ -312,18 +312,9 @@ def style_log_det_metric(y_true, y_pred, num_model=FLAGS.num_models):
 
 
 class MyIterator:
-  def __init__(self,x_iterator,y,b_size):
-    self.x_iterator = x_iterator
-    self.label = np.array_split(y,y.shape[0]/b_size+1,0)
-    self.i = 0
-    self.len = len(self.label)
-    print(y.shape)
-    print(self.label[0].shape)
-    print(b_size)
+  def __init__(self,iterator):
+    self.iterator = iterator
   def __next__(self):
-    if self.i>=self.len:
-      raise StopIteration
-    index = self.i
-    self.i+=1
-    return (self.x_iterator.__next__(),{'concatenate_1':self.label[index],
-        'concatenate_2':self.label[index]})
+    x,y=self.iterator.__next__()
+    return (x,{'concatenate_1':y,
+        'concatenate_2':y})
