@@ -80,14 +80,20 @@ model_input = Input(shape=input_shape)
 
 model_dic = {}
 model_out = []
-feature_maps = []
+feature_maps_1 = []
+feature_maps_2 = []
+feature_maps_3 = []
 for i in range(FLAGS.num_models):
     model_dic[str(i)] = resnet_v1(input=model_input, depth=depth, num_classes=num_classes, dataset=FLAGS.dataset)
     model_out.append(model_dic[str(i)][2])
-    feature_maps.append(model_dic[str(i)][5])
+    feature_maps_1.append(model_dic[str(i)][5][0])
+    feature_maps_2.append(model_dic[str(i)][5][1])
+    feature_maps_3.append(model_dic[str(i)][5][2])
 
 model_output = keras.layers.concatenate(model_out)
-model_feature_map = keras.layers.concatenate(feature_maps)
+model_feature_map_1 = keras.layers.concatenate(feature_maps_1)
+model_feature_map_2 = keras.layers.concatenate(feature_maps_2)
+model_feature_map_3 = keras.layers.concatenate(feature_maps_3)
 
 # model = Model(input=model_input, output=model_output)
 
@@ -95,10 +101,10 @@ model_feature_map = keras.layers.concatenate(feature_maps)
 #         loss=Loss_withEE_DPP,
 #         optimizer=Adam(lr=lr_schedule(0)),
 #         metrics=[acc_metric, Ensemble_Entropy_metric, log_det_metric])
-model = Model(inputs=model_input, outputs=[model_output,model_feature_map])
+model = Model(inputs=model_input, outputs=[model_output,model_feature_map_1,model_feature_map_2,model_feature_map_3])
 
 model.compile(
-        loss={'concatenate_1':CE_loss,'concatenate_2':Style_Loss},
+        loss={'concatenate_1':CE_loss,'concatenate_2':Style_Loss,'concatenate_3':Style_Loss,'concatenate_4':Style_Loss},
         loss_weights=[1, FLAGS.log_det_lamda],
         optimizer=Adam(lr=lr_schedule(0)),
         metrics={'concatenate_1': acc_style_metric})
@@ -137,11 +143,15 @@ if not FLAGS.augmentation:
     print('Not using data augmentation.')
     y_trains_2 = {
         'concatenate_1':y_train_2,
-        'concatenate_2':y_train_2
+        'concatenate_2':y_train_2,
+        'concatenate_3':y_train_2,
+        'concatenate_4':y_train_2
     }
     y_tests_2 = {
         'concatenate_1':y_test_2,
-        'concatenate_2':y_test_2
+        'concatenate_2':y_test_2,
+        'concatenate_3':y_test_2,
+        'concatenate_4':y_test_2
     }
     model.fit(
         x_train, y_trains_2,

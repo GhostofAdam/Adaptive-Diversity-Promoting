@@ -319,4 +319,6 @@ class MyIterator(keras.utils.Sequence):
   def __getitem__(self,index):
     x,y=self.iterator.__getitem__(index)
     return (x,{'concatenate_1':y,
-        'concatenate_2':y})
+        'concatenate_2':y,
+        'concatenate_3':y,
+        'concatenate_4':y})

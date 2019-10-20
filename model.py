@@ -83,6 +83,7 @@ def resnet_v1(input, depth, num_classes=10, dataset='cifar10'):
 
     inputs = input
     x = resnet_layer(inputs=inputs)
+    feature_map = []
     # Instantiate the stack of residual units
     for stack in range(3):
         for res_block in range(num_res_blocks):
@@ -104,8 +105,7 @@ def resnet_v1(input, depth, num_classes=10, dataset='cifar10'):
                     batch_normalization=False)
             x = keras.layers.add([x, y])
             x = Activation('relu')(x)
-            if res_block==2:
-                feature_map = x
+            feature_map.append(x)
         num_filters *= 2
 
     # Add classifier on top.
