@@ -91,6 +91,7 @@ def resnet_v1(input, depth, num_classes=10, dataset='cifar10'):
                 strides = 2  # downsample
             y = resnet_layer(inputs=x, num_filters=num_filters, strides=strides)
             y = resnet_layer(inputs=y, num_filters=num_filters, activation=None)
+            
             if stack > 0 and res_block == 0:  # first layer but not first stack
                 # linear projection residual shortcut connection to match
                 # changed dims
@@ -103,6 +104,8 @@ def resnet_v1(input, depth, num_classes=10, dataset='cifar10'):
                     batch_normalization=False)
             x = keras.layers.add([x, y])
             x = Activation('relu')(x)
+            if res_block==2:
+                feature_map = x
         num_filters *= 2
 
     # Add classifier on top.
@@ -111,7 +114,7 @@ def resnet_v1(input, depth, num_classes=10, dataset='cifar10'):
         poolsize = 7
     else:
         poolsize = 8
-    feature_map = x
+    
     x = AveragePooling2D(pool_size=poolsize)(x)
     final_features = Flatten()(x)
     logits = Dense(
