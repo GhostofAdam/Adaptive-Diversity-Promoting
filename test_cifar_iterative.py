@@ -103,6 +103,7 @@ for i in range(FLAGS.num_models):
 
 model_output_baseline = keras.layers.concatenate(model_out_baseline)
 model_feature_map_baseline = keras.layers.concatenate(feature_maps_baseline)
+
 model_baseline = Model(inputs=model_input_baseline, outputs=[model_output_baseline,model_feature_map_baseline])
 model_ensemble_baseline = keras.layers.Average()(model_out_baseline)
 model_ensemble_baseline = Model(input=model_input_baseline, output=model_ensemble_baseline)
@@ -114,8 +115,8 @@ wrap_ensemble = KerasModelWrapper(model_ensemble)
 wrap_ensemble_baseline = KerasModelWrapper(model_ensemble_baseline)
 
 #Load model
-model.load_weights(filepath,by_name=True)
-model_baseline.load_weights(filepath_baseline,by_name=True)
+model.load_weights(filepath)
+model_baseline.load_weights(filepath_baseline)
 
 
 
