@@ -80,12 +80,12 @@ feature_maps = []
 for i in range(FLAGS.num_models):
     model_dic[str(i)] = resnet_v1(input=model_input, depth=depth, num_classes=num_classes, dataset=FLAGS.dataset)
     model_out.append(model_dic[str(i)][2])
-    feature_maps.append(model_dic[str(i)][5])
+    
 
 model_output = keras.layers.concatenate(model_out)
-model_feature_map = keras.layers.concatenate(feature_maps)
 
-model = Model(inputs=model_input, outputs=[model_output,model_feature_map])
+
+model = Model(inputs=model_input, outputs=model_output)
 model_ensemble = keras.layers.Average()(model_out)
 model_ensemble = Model(input=model_input, output=model_ensemble)
 
@@ -95,16 +95,15 @@ model_ensemble = Model(input=model_input, output=model_ensemble)
 model_input_baseline = Input(shape=input_shape)
 model_dic_baseline = {}
 model_out_baseline = []
-feature_maps_baseline = []
+
 for i in range(FLAGS.num_models):
     model_dic_baseline[str(i)] = resnet_v1(input=model_input_baseline, depth=depth, num_classes=num_classes, dataset=FLAGS.dataset)
     model_out_baseline.append(model_dic_baseline[str(i)][2])
-    feature_maps_baseline.append(model_dic_baseline[str(i)][5])
 
 model_output_baseline = keras.layers.concatenate(model_out_baseline)
-model_feature_map_baseline = keras.layers.concatenate(feature_maps_baseline)
 
-model_baseline = Model(inputs=model_input_baseline, outputs=[model_output_baseline,model_feature_map_baseline])
+
+model_baseline = Model(inputs=model_input_baseline, outputs=model_output_baseline)
 model_ensemble_baseline = keras.layers.Average()(model_out_baseline)
 model_ensemble_baseline = Model(input=model_input_baseline, output=model_ensemble_baseline)
 
