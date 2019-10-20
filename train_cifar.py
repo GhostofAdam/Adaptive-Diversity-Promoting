@@ -105,7 +105,7 @@ model = Model(inputs=model_input, outputs=[model_output,model_feature_map_1,mode
 
 model.compile(
         loss={'concatenate_1':CE_loss,'concatenate_2':Style_Loss,'concatenate_3':Style_Loss,'concatenate_4':Style_Loss},
-        loss_weights=[1, FLAGS.log_det_lamda],
+        loss_weights=[1, FLAGS.log_det_lamda,FLAGS.log_det_lamda,FLAGS.log_det_lamda],
         optimizer=Adam(lr=lr_schedule(0)),
         metrics={'concatenate_1': acc_style_metric})
 
@@ -212,7 +212,9 @@ else:
     
     y_tests_2 = {
         'concatenate_1':y_test_2,
-        'concatenate_2':y_test_2
+        'concatenate_2':y_test_2,
+        'concatenate_3':y_test_2,
+        'concatenate_4':y_test_2
     }
     f = datagen.flow(x_train,y_train_2, batch_size=FLAGS.batch_size)
     # _x_train = []
