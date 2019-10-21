@@ -291,7 +291,7 @@ def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
 def Style_Loss(y_true, y_pred, num_model=FLAGS.num_models):
   feature_map = y_pred
   log_det = log_style_distence(feature_map,num_model)
-  return -log_det
+  return log_det
   
   
 def acc_style_metric(y_true, y_pred, num_model=FLAGS.num_models):
