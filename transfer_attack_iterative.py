@@ -142,7 +142,7 @@ if FLAGS.attack_method == 'MadryEtAl':
             preds_baseline = models_baseline[j](adv_x_baseline)
             acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
             acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
-            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,acc_baseline,i,j))
+            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,i,j,acc_baseline))
 
 elif FLAGS.attack_method == 'FastGradientMethod':
     for i in range(FLAGS.num_models):
@@ -155,7 +155,7 @@ elif FLAGS.attack_method == 'FastGradientMethod':
             preds_baseline = models_baseline[j](adv_x_baseline)
             acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
             acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
-            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,acc_baseline,i,j))
+            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,i,j,acc_baseline))
 elif FLAGS.attack_method == 'MomentumIterativeMethod':
     for i in range(FLAGS.num_models):
         for j in range(FLAGS.num_models):
@@ -167,7 +167,7 @@ elif FLAGS.attack_method == 'MomentumIterativeMethod':
             preds_baseline = models_baseline[j](adv_x_baseline)
             acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
             acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
-            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,acc_baseline,i,j))
+            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,i,j,acc_baseline))
 elif FLAGS.attack_method == 'BasicIterativeMethod':
     for i in range(FLAGS.num_models):
         for j in range(FLAGS.num_models):
@@ -179,6 +179,6 @@ elif FLAGS.attack_method == 'BasicIterativeMethod':
             preds_baseline = models_baseline[j](adv_x_baseline)
             acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
             acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
-            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,acc_baseline,i,j))
+            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,i,j,acc_baseline))
 
 
