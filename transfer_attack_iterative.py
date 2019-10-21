@@ -86,8 +86,9 @@ model_output = keras.layers.concatenate(model_out)
 
 
 model = Model(inputs=model_input, outputs=model_output)
-model_ensemble = keras.layers.Average()(model_out)
-model_ensemble = Model(input=model_input, output=model_ensemble)
+models = []
+for i in range(FLAGS.num_models):
+    models.append(Model(inputs=model_input, outputs=model_out[i]))
 
 
 
@@ -104,36 +105,14 @@ model_output_baseline = keras.layers.concatenate(model_out_baseline)
 
 
 model_baseline = Model(inputs=model_input_baseline, outputs=model_output_baseline)
-model_ensemble_baseline = keras.layers.Average()(model_out_baseline)
-model_ensemble_baseline = Model(input=model_input_baseline, output=model_ensemble_baseline)
+models_baseline = []
+for i in range(FLAGS.num_models):
+    models_baseline.append(Model(inputs=model_input, outputs=model_out_baseline[i]))
 
-
-
-#Get individual models
-wrap_ensemble = KerasModelWrapper(model_ensemble)
-wrap_ensemble_baseline = KerasModelWrapper(model_ensemble_baseline)
 
 #Load model
 model.load_weights(filepath)
 model_baseline.load_weights(filepath_baseline)
-
-
-
-
-# Initialize the attack method
-if FLAGS.attack_method == 'MadryEtAl':
-    att = attacks.MadryEtAl(wrap_ensemble)
-    att_baseline = attacks.MadryEtAl(wrap_ensemble_baseline)
-elif FLAGS.attack_method == 'FastGradientMethod':
-    att = attacks.FastGradientMethod(wrap_ensemble)
-    att_baseline = attacks.FastGradientMethod(wrap_ensemble_baseline)
-elif FLAGS.attack_method == 'MomentumIterativeMethod':
-    att = attacks.MomentumIterativeMethod(wrap_ensemble)
-    att_baseline = attacks.MomentumIterativeMethod(wrap_ensemble_baseline)
-elif FLAGS.attack_method == 'BasicIterativeMethod':
-    att = attacks.BasicIterativeMethod(wrap_ensemble)
-    att_baseline = attacks.BasicIterativeMethod(wrap_ensemble_baseline)
-
 # Consider the attack to be constant
 eval_par = {'batch_size': 100}
 eps_ = FLAGS.eps
@@ -148,12 +127,58 @@ else:
                'clip_min': clip_min,
                'clip_max': clip_max,
                'nb_iter': 10}
-               
-adv_x_baseline = tf.stop_gradient(att_baseline.generate(x, **att_params))
-preds = model_ensemble(adv_x_baseline)
-preds_baseline = model_ensemble_baseline(adv_x_baseline)
-acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
-acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
-print('adv_ensemble_acc: %.3f adv_ensemble_baseline_acc: %.3f'%(acc,acc_baseline))
+
+
+
+# Initialize the attack method
+if FLAGS.attack_method == 'MadryEtAl':
+    for i in range(FLAGS.num_models):
+        for j in range(FLAGS.num_models):
+            att = attacks.MadryEtAl(models[i])
+            att_baseline = attacks.MadryEtAl(models_baseline[i])
+            adv_x = tf.stop_gradient(att.generate(x, **att_params))
+            adv_x_baseline = tf.stop_gradient(att_baseline.generate(x, **att_params))
+            preds = models[j](adv_x)
+            preds_baseline = models_baseline[j](adv_x_baseline)
+            acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
+            acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
+            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,acc_baseline,i,j))
+
+elif FLAGS.attack_method == 'FastGradientMethod':
+    for i in range(FLAGS.num_models):
+        for j in range(FLAGS.num_models):
+            att = attacks.FastGradientMethod(models[i])
+            att_baseline = attacks.FastGradientMethod(models_baseline[i])
+            adv_x = tf.stop_gradient(att.generate(x, **att_params))
+            adv_x_baseline = tf.stop_gradient(att_baseline.generate(x, **att_params))
+            preds = models[j](adv_x)
+            preds_baseline = models_baseline[j](adv_x_baseline)
+            acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
+            acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
+            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,acc_baseline,i,j))
+elif FLAGS.attack_method == 'MomentumIterativeMethod':
+    for i in range(FLAGS.num_models):
+        for j in range(FLAGS.num_models):
+            att = attacks.MomentumIterativeMethod(models[i])
+            att_baseline = attacks.MomentumIterativeMethod(models_baseline[i])
+            adv_x = tf.stop_gradient(att.generate(x, **att_params))
+            adv_x_baseline = tf.stop_gradient(att_baseline.generate(x, **att_params))
+            preds = models[j](adv_x)
+            preds_baseline = models_baseline[j](adv_x_baseline)
+            acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
+            acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
+            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,acc_baseline,i,j))
+elif FLAGS.attack_method == 'BasicIterativeMethod':
+    for i in range(FLAGS.num_models):
+        for j in range(FLAGS.num_models):
+            att = attacks.BasicIterativeMethod(models[i])
+            att_baseline = attacks.BasicIterativeMethod(models_baseline[i])
+            adv_x = tf.stop_gradient(att.generate(x, **att_params))
+            adv_x_baseline = tf.stop_gradient(att_baseline.generate(x, **att_params))
+            preds = models[j](adv_x)
+            preds_baseline = models_baseline[j](adv_x_baseline)
+            acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
+            acc_baseline = model_eval(sess, x, y, preds_baseline, x_test, y_test, args=eval_par)
+            print('adv_%dtransfer%d_acc: %.3f adv_%dtransfer%d_baseline_acc: %.3f'%(i,j,acc,acc_baseline,i,j))
 
 
