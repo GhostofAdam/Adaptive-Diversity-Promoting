@@ -54,6 +54,20 @@ def Ensemble_Entropy(y_true, y_pred, num_model=FLAGS.num_models):
     Ensemble = Entropy(y_p_all / num_model)
     return Ensemble
 
+def My_Ensemble_Entropy(y_true, y_pred, num_model=FLAGS.num_models):
+    y_true = tf.matmul(y_true, y_pred)
+    y_p = tf.split(y_pred, num_model, axis=-1)
+    my_ensemble_entropy = 0
+    for i in range(num_model):
+      for j in range(num_model):
+        if i is not j:
+          my_ensemble_entropy+=keras.losses.categorical_crossentropy(y_p[i], y_p[j])
+    my_ensemble_entropy/=num_models*2
+    return my_ensemble_entropy
+
+
+
+
 def log_det(y_true, y_pred, num_model=FLAGS.num_models):
     bool_R_y_true = tf.not_equal(tf.ones_like(y_true) - y_true, zero) # batch_size X (num_class X num_models), 2-D
     mask_non_y_pred = tf.boolean_mask(y_pred, bool_R_y_true) # batch_size X (num_class-1) X num_models, 1-D
@@ -272,7 +286,7 @@ def log_style_distence(feature_map,num_model):
         if i is not j:
           style_loss_sum+=2*tf.nn.l2_loss(f_p[i]-f_p[j])/size
   style_loss_sum/=2
-  return tf.math.log(style_loss_sum)
+  return tf.math.log(style_loss_sum + log_offset)
 
 def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
   y_true = (num_model * y_true) / tf.reduce_sum(y_true, axis=1, keepdims=True) 
@@ -285,8 +299,8 @@ def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
     print('This is original ECE!')
     return CE_all
   else:
-    EE = Ensemble_Entropy(y_true, y_pred, num_model)
-    return CE_all - FLAGS.lamda * EE
+    EE = My_Ensemble_Entropy(y_true, y_pred, num_model)
+    return CE_all + FLAGS.lamda * EE
 
 def Style_Loss(y_true, y_pred, num_model=FLAGS.num_models):
   feature_map = y_pred
