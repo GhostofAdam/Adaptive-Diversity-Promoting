@@ -55,7 +55,7 @@ y_test = keras.utils.to_categorical(y_test, num_classes)
 
 # Define input TF placeholder
 x = tf.placeholder(tf.float32, shape=(None, 32, 32, 3))
-x = tf.reverse(x,axis=-1)
+x = tf.reverse(x,axis=[3])
 y = tf.placeholder(tf.float32, shape=(None, num_classes))
 sess = tf.Session()
 keras.backend.set_session(sess)
