@@ -316,8 +316,8 @@ def acc_style_metric(y_true, y_pred, num_model=FLAGS.num_models):
 
 def style_Ensemble_Entropy_metric(y_true, y_pred, num_model=FLAGS.num_models):
   
-  EE = Ensemble_Entropy(y_true, y_pred, num_model=num_model)
-  return K.mean(EE)
+  EE = My_Ensemble_Entropy(y_true, y_pred, num_model=num_model)
+  return EE
 
 def style_log_det_metric(y_true, y_pred, num_model=FLAGS.num_models):
   feature_map = y_pred
