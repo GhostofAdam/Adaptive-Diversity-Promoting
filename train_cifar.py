@@ -69,9 +69,9 @@ def lr_schedule(epoch):
         lr (float32): learning rate
     """
     lr = 1e-3
-    if epoch > 150:
+    if epoch > 100:
         lr *= 1e-2
-    elif epoch > 100:
+    elif epoch > 50:
         lr *= 1e-1
     print('Learning rate: ', lr)
     return lr
