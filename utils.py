@@ -286,7 +286,8 @@ def log_style_distence(feature_map,num_model):
         if i is not j:
           style_loss_sum+=2*tf.nn.l2_loss(f_p[i]-f_p[j])/size
   style_loss_sum/=2
-  return tf.math.log(style_loss_sum + log_offset)
+  #return tf.math.log(style_loss_sum + log_offset)
+  return style_loss_sum
 
 def CE_loss(y_true,y_pred,num_model=FLAGS.num_models):
   y_true = (num_model * y_true) / tf.reduce_sum(y_true, axis=1, keepdims=True) 
