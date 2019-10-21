@@ -86,6 +86,7 @@ models = []
 for i in range(FLAGS.num_models):
     models.append(Model(inputs=model_input, outputs=model_out[i]))
 eval_par = {'batch_size': 100}
+model.load_weights(filepath)
 for i in range(FLAGS.num_models):
     preds = models[i](x)
     acc = model_eval(sess, x, y, preds, x_test, y_test, args=eval_par)
