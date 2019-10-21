@@ -107,7 +107,7 @@ model.compile(
         loss={'concatenate_1':CE_loss,'concatenate_2':Style_Loss,'concatenate_3':Style_Loss,'concatenate_4':Style_Loss},
         loss_weights=[1, -FLAGS.log_det_lamda,-FLAGS.log_det_lamda,-FLAGS.log_det_lamda],
         optimizer=Adam(lr=lr_schedule(0)),
-        metrics={'concatenate_1': acc_style_metric})
+        metrics={'concatenate_1':Ensemble_Entropy_metric,'concatenate_1': acc_style_metric})
 
 model.summary()
 print(model_type)
