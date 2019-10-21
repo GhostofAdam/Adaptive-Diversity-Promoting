@@ -62,7 +62,7 @@ def My_Ensemble_Entropy(y_true, y_pred, num_model=FLAGS.num_models):
       for j in range(num_model):
         if i is not j:
           my_ensemble_entropy+=keras.losses.categorical_crossentropy(y_p[i], y_p[j])
-    my_ensemble_entropy/=num_models*2
+    my_ensemble_entropy/=num_model*2
     return my_ensemble_entropy
 
 
