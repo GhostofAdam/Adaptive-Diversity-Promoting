@@ -107,7 +107,7 @@ model_output_baseline = keras.layers.concatenate(model_out_baseline)
 model_baseline = Model(inputs=model_input_baseline, outputs=model_output_baseline)
 models_baseline = []
 for i in range(FLAGS.num_models):
-    models_baseline.append(Model(inputs=model_input, outputs=model_out_baseline[i]))
+    models_baseline.append(Model(inputs=model_input_baseline, outputs=model_out_baseline[i]))
 
 
 #Load model
