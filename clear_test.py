@@ -23,7 +23,6 @@ version = 1
 # Model name, depth and version
 model_type = 'ResNet%dv%d' % (depth, version)
 print(model_type)
-print('Attack method is %s'%FLAGS.attack_method)
 
 # Load the data.
 if FLAGS.dataset == 'cifar10':
