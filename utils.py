@@ -270,7 +270,7 @@ def log_style_distence(feature_map,num_model):
   for i in range(num_model):
       for j in range(num_model):
         if i is not j:
-          style_loss_sum+=keras.losses.mean_squared_error(f_p[i],f_p[j])
+          style_loss_sum+=2*tf.nn.l2_loss(f_p[i],f_p[j])/f_p[i].size
   style_loss_sum/=2
   return tf.math.log(style_loss_sum)
 
